@@ -377,4 +377,122 @@
 
   To finish this part of the course and completely escape from the console, we should clean up our code a bit, and get rid of our old `todoList.displayTodos()` method and its instances. Instead, we'll place our new `view.displayTodos()` method at the end of methods defined on handler object
 
+##  Functions inside of functions
+
+  Let's create a function that logs 10 numbers:
+
+  ```javascript
+  function logNumbers() {
+    for (var i = 0; i < 10; i++) {
+      console.log(i);
+    }
+  }
+  ```
+
+  But what if we want to debug the function with the debugger? We'd run:
+
+  ```javascript
+  debugger;
+  logNumbers();
+  ```
+
+  Instead of doing that we could create a function which would run a debugger for us:
+
+  ```javascript
+  function runWithDebugger(ourFunction){
+    debugger;
+    ourFunction();
+  }
+  ```
+
+  So next time when we want to debug our function we'd do:
+
+  ```javascript
+  runWithDebugger(function logNumbers() {
+    for (var i = 0; i < 10; i++) {
+      console.log(i);
+    }
+  });
+  ```
+  We've simplified the task of debugging for us. The ability to run functions inside functions is very powerful, it enhances the behaviour of other functions.
+
+  E.g.: built-in `setTimeout();` function which acts as an alarm, it'll run the function we'll pass in 5000ms(5s) period of time:
+
+  ```javascript
+  setTimeout(function(){
+    console.log("Wake up!");
+  }, 5000);
+  ```
+
+  So it enhances the behaviour of passed in function by turning it in a timer or alarm clock.
+
+  Another example of enhanced function is `forEach()` which acts on all arrays and basically executes the function we pass in to `forEach()` on every element of array:
+
+  ```javascript
+  var students = ['anne', 'pete', 'bruno'];
+
+  function logName(name){
+    console.log(name);
+  }
+
+  logName(students[0]); // anne
+  logName(students[1]); // pete
+
+  for (var i = 0; i < students.length; i++){
+    logName(students[i]);
+  }
+  ```
+
+  But we can automate that like so:
+
+  ```javascript
+  students.forEach(logName);
+
+  // or
+
+  students.forEach(function logName(name){
+    console.log(name);
+  });
+
+  // or
+
+  students.forEach(function(name){
+    console.log(name);
+  });  
+  ```
+
+  Actually, we can write a similar function to built in `forEach()` ourselves:
+
+  ```javascript
+  function forEach(myArray, myFunction){
+    for (var i = 0; i < myArray.length; i++){
+      myFunction(myArray[i]);
+    }
+  }
+
+  forEach(students, logName); // logName will serve as it takes a student's name as a parameter
+  ```
+
+  You'll notice similar patterns with built-in `addEventListener`:
+
+  ```javascript
+  var currentElement = $0; // to reference a highlighted element in Chrome
+  currentElement.addEventListener('click', function(){
+    alert('Click!'); // it'll alert when the element is clicked
+  });
+
+  // or
+
+  currentElement.addEventListener('click', function(event){
+    console.log(event); // it'll log event-object to the console if you choose to
+    alert('Click!');
+  })
+  ```
+
+  In the code examples above, `forEach()`, `setTimeout()` and `addEventListener()` are called higher order functions, they accept other functions as arguments and enhance their behaviour.
+
+  The functions we pass in to higher order functions as parameters are callback functions.
+
 ##  10. Requirements v10
+
+  
