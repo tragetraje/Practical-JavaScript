@@ -564,3 +564,63 @@
   Cleaning up the code we can completely get rid of Delete button div in our index.html
 
   And wrapping up, we've used event delegation pattern by making our ul element respond to click events of child delete button
+
+##  Requirements v11
+
+  We're going to re-write our for loops and replace them with `forEach()` method, it makes them easier to read and less error prone. Our new todoList.toggleAll() method will look like so:
+
+  ```javascript
+  toggleAll: function() {
+    var totalTodos = this.todos.length;
+    var completedTodos = 0;
+
+    // Get number of completed todos.
+    this.todos.forEach(function(todo) {
+      if (todo.completed === true) {
+        completedTodos++;
+      }
+    });
+
+    this.todos.forEach(function(todo) {
+      // Case 1: If everything’s true, make everything false.
+      if (completedTodos === totalTodos) {
+        todo.completed = false;
+      // Case 2: Otherwise, make everything true.
+      } else {
+          todo.completed = true;
+      }
+    });
+  }
+  ```
+
+  and `view.displayTodos()`:
+
+  ```javascript
+  displayTodos: function() {
+    var todosUl = document.querySelector('ul');
+    todosUl.innerHTML = '';
+
+    todoList.todos.forEach(function(todo, position) {
+      var todoLi = document.createElement('li');
+      var todoTextWithCompletion = '';
+
+      if (todo.completed === true) {
+        todoTextWithCompletion = '(x) ' + todo.todoText;
+      } else {
+        todoTextWithCompletion = '( ) ' + todo.todoText;
+      }
+
+      todoLi.id = position;
+      todoLi.textContent = todoTextWithCompletion;
+      todoLi.appendChild(this.createDeleteButton());
+      todosUl.appendChild(todoLi);
+
+    }, this);
+  }
+  ```
+
+  Here there are a couple of nuances:
+
+  We actually are able to pass two arguments to our callback function of `forEach()` method, a todo on which it operates and its index in an array, e.g position. Because of that we can do `todoLi.id = position;`
+
+  Besides that, to access our view object from within `todoLi.appendChild(this.createDeleteButton());` function we should `this` as a second argument to `forEach(callback, this);`
