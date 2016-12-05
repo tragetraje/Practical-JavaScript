@@ -49,3 +49,10 @@
 - There should be an li element for every todo
 - Each li element should contain .todoText
 - Each li element should show completed
+
+## Requirements v10
+- There should be a way to create delete button
+- There should be a delete button for each todo
+- Each li should have an id that has the todo position
+- Delete buttons should have access to the todo id
+- Clicking delete should update todoList.todos and the DOM

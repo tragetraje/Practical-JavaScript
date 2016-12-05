@@ -495,4 +495,72 @@
 
 ##  10. Requirements v10
 
-  
+  We're working on creating a new delete button, to simplify our code we'll write a new method to do that which finally shold return a button:
+
+  ```javascript
+  var view = {
+    displayTodos: function() {
+      // method
+    },
+    createDeleteButton: function() {
+      var deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.className = 'deleteButton';
+      return deleteButton;
+    }
+  };
+  ```
+
+  To add a delete button to each todo we should just grab a reference to each li element and insert created button element inside `view.displayTodos()` like so: `todoLi.appendChild(this.createDeleteButton());`
+
+  Working on assigning each li element its unique id we should just do that:
+  `todoLi.id = i;` inside the for loop.
+
+  To get an access to todo's is from delete button we'll use `addEventListener()` function. Thinking about which element should have an event listener attached it's probably logical to think about li elements, since that's where we created the delete buttons. But, attaching an event listener to each li we'll finish with a lot of them working with the app and it could lead to performance problems. So it's smarter to attach it to unordered list since it's the parentNode od li. How we can do that? With event object we pass in to `addEventListener()` function.
+
+  Let's grab the reference to ul:
+
+  `var todosUl = document.querySelector('ul');`
+
+  and then explore event object clicking triggering an event from delete button:
+
+  ```javascript
+  todosUl.addEventListener('click', function(event) {
+      console.log(event.target.parentNode.id); // logs li's id
+    });
+  ```
+
+  Clever!
+
+  Let's make our delete button actually delete the created todo and update the DOM:
+
+  ```javascript
+  var view = {
+    displayTodos: function() {
+      // code
+    },
+    createDeleteButton: function() {
+      // code
+    },
+    setUpEventListeners: function() {
+      var todosUl = document.querySelector('ul');
+
+      todosUl.addEventListener('click', function(event) {
+        var elementClicked = event.target;
+
+        if (elementClicked.className === 'deleteButton') {
+          handlers.deleteTodo(parseInt(elementClicked.parentNode.id));
+        }
+      });
+    }
+  };
+  ```
+
+  Don't forget to get rid of old deleteTodo functionality in `handlers.deleteTodo()` and pass in a position `handlers.deleteTodo(position)`
+   and call our function:
+
+  `view.setUpEventListeners();`
+
+  Cleaning up the code we can completely get rid of Delete button div in our index.html
+
+  And wrapping up, we've used event delegation pattern by making our ul element respond to click events of child delete button
