@@ -76,7 +76,7 @@
   }
   ```  
   Then call the function and see what happens!! Yay!!  
-  `function changeTodo(0, 'new changed value');`
+  `changeTodo(0, 'new changed value');`
 
   5. How do we write a delete function?  
 
@@ -106,7 +106,7 @@
   };
   ```
 
-  Storing our data in an object will help to organize our code as well, everything related to todos will be inside one object  
+  Storing our data in an object will help to organise our code as well, everything related to todos will be inside one object  
 
   Follow along app.js file
 
@@ -120,7 +120,7 @@
   So we'll just rename newValue parameter to todoText as it sounds more descriptive and we want to grab just todoText property of todo object that we pushed so to target it we do:  
   `this.todos[position].todoText`
 
-  In a new toggleCompleted method we grab the completed property of our newly added item `todoList.todos[position].completed` (or simply `this.todos[position].completed`) and flip its original value with the bang operator:
+  In a new toggleCompleted method we grab the completed property of our newly added item `todoList.todos[position].completed` (or simply `this.todos[position].completed`) and flip its original value with the bang operator `!`:
 
   `this.todos[position].completed = !this.todos[position].completed;`
 
@@ -160,7 +160,7 @@
   In version 6 we are going to work solely on one feature which consists of two parts:  
   1.  How to toggle all the tasks to false when all of them are true or otherwise make them all true:  
 
-  Start with case 1, but we how can we get totalTodos (that's this.todos.length) and completedTodos?
+  Start with case 1, but how can we get totalTodos (that's this.todos.length) and completedTodos?
   ```javascript
   toggleAll: function() {
         var totalTodos = this.todos.length;
@@ -180,6 +180,7 @@
       }  
   ```  
   2. In the second case we just need to add an if statement.
+
   ```javascript
   toggleAll: function() {
         var totalTodos = this.todos.length;
@@ -232,7 +233,9 @@
 
 ##  7. Requirements v7
 
-  Create two button elements in our HTML "Display Todos" and "Toggle All", now we want to get access to the buttons from our js. We want to run `todoList.displayTodos()` method when someone clicks a button.
+  Get access to `document` object from the console and see the methods defined on it.
+
+  Let's create two button elements in our HTML "Display Todos" and "Toggle All", now we want to get access to the buttons from our js. We want to run `todoList.displayTodos()` method when someone clicks a button.
 
   To get an access to the button we create a variable:
 
@@ -295,7 +298,7 @@
 
   With new requirements we'll have to take user's input into account, introduce `<input>` since it's the way to write the todos in our simple UI.
 
-  Let's organize our html first:
+  Let's organise our html first:
   ```
   <div>
   <button onclick="handlers.displayTodos()">Display Todos</button>
@@ -327,7 +330,7 @@
 
   First, create static empty `<ul></ul>` element in our html, we can do it this way since it's the only unordered list on the page now.
 
-  The `<li>` element will be created dynamically with JS like so:
+  The `<li>` element will be created dynamically within <ul> with JS like so:
   `
   var todoLi = document.createElement('li');
   var todosUl = document.querySelector('ul');
@@ -495,7 +498,7 @@
 
 ##  10. Requirements v10
 
-  We're working on creating a new delete button, to simplify our code we'll write a new method to do that which finally shold return a button:
+  We're working on creating a new delete button, to simplify our code we'll write a new method to do that which finally should return a button:
 
   ```javascript
   var view = {
@@ -516,7 +519,7 @@
   Working on assigning each li element its unique id we should just do that:
   `todoLi.id = i;` inside the for loop.
 
-  To get an access to todo's is from delete button we'll use `addEventListener()` function. Thinking about which element should have an event listener attached it's probably logical to think about li elements, since that's where we created the delete buttons. But, attaching an event listener to each li we'll finish with a lot of them working with the app and it could lead to performance problems. So it's smarter to attach it to unordered list since it's the parentNode od li. How we can do that? With event object we pass in to `addEventListener()` function.
+  To get an access to todo's is from delete button we'll use `addEventListener()` function. Thinking about which element should have an event listener attached it's probably logical to think about li elements, since that's where we created the delete buttons. But, attaching an event listener to each li we'll finish with a lot of them working with the app and it could lead to performance problems. So it's smarter to attach it to unordered list since it's the parentNode of li. How we can do that? With event object we pass in to `addEventListener()` function.
 
   Let's grab the reference to ul:
 
@@ -623,4 +626,4 @@
 
   We actually are able to pass two arguments to our callback function of `forEach()` method, a todo on which it operates and its index in an array, e.g position. Because of that we can do `todoLi.id = position;`
 
-  Besides that, to access our view object from within `todoLi.appendChild(this.createDeleteButton());` function we should `this` as a second argument to `forEach(callback, this);`
+  Besides that, to access our view object from within `todoLi.appendChild(this.createDeleteButton());` function we should pass `this` as a second argument to `forEach(callback, this);`
